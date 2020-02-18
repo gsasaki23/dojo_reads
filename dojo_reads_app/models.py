@@ -53,12 +53,12 @@ class UserManager(models.Manager):
         user = User.objects.filter(email=postData['login_email'])
         # If no matching user found
         if len(user) != 1:
-            errors['login_email']='Invalid email address or password 1'
+            errors['login_email']='Invalid email address or password'
         # If matching user found, but...
         else:
             # If password check returns false
             if bcrypt.checkpw(postData['login_password'].encode(), user[0].password.encode()) == False:
-                errors['login_email']='Invalid email address or password 2'
+                errors['login_email']='Invalid email address or password'
         
         return errors
 

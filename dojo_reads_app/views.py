@@ -48,8 +48,17 @@ def book_details(request, book_id):
 def user_details(request, user_id):
     try:
         current_user = User.objects.get(id=request.session['user_id'])
+        lookup_user = User.objects.get(id=user_id)
+        temp_book_list = lookup_user.reviews.all().values('book').distinct()
+        book_list = []
+        for book in temp_book_list:
+            book_list.append(Book.objects.get(id=book['book']))
+            
         context = {
-            "first_name":current_user.first_name
+            "name":lookup_user.first_name + " " + lookup_user.last_name,
+            "email":lookup_user.email,
+            "review_len":len(lookup_user.reviews.all()),
+            "book_list":book_list,
         }
         return render(request, 'user_details.html', context)
     except KeyError:
@@ -97,14 +106,7 @@ def logout(request):
 
 
 # POST for attempting to add book, save and route to books if OK
-def attempt_book(request):
-    # errors = Book.objects.reg_validator(request.POST)
-    # if len(errors) > 0:
-    #     for key, value in errors.items():
-    #         messages.error(request, value)
-    #     return redirect('/')    
-    # else:
-    
+def attempt_book(request):    
     # Creates new Book
     Book.objects.create(
         title=request.POST["title"],

@@ -17,17 +17,32 @@
         crossorigin="anonymous"></script>
 </head>
 <body>
-    <div class="container-fluid">
+    <div class="container">
         <!-- NavBar -->
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <h4 class="my-lg-0">Welcome, {{first_name}}!</h3>
             <div class="collapse navbar-collapse">
                 <ul class="navbar-nav mr-auto"></ul>
-                <a href="/books" class="ml-5 my-2 my-lg-0">Back</a>
                 <a href="/books" class="ml-5 my-2 my-lg-0">Home</a>
                 <a href="/logout" class="ml-5 my-2 my-lg-0">Log Out</a>
             </div>
         </nav>
+        <div class="row">
+            <h3>Name: {{name}}</h3>
+        </div>
+        <div class="row">
+            <h3>Email: {{email}}</h3>
+        </div>
+        <div class="row">
+            <h3>Total Reviews: {{review_len}}</h3>
+        </div>
+        <div class="row">
+            <h3><br>Posted Reviews on the following books:</h3>
+        </div>
+        {% for book in book_list %}
+        <div class="row pl-3">
+            <a href="/books/{{book.id}}">{{book.title}}</a>
+        </div>
+        {% endfor %}
     </div>
 </body>
 </html>

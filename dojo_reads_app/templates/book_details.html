@@ -36,10 +36,10 @@
             <div class="col">
                 <h3>Reviews:</h3>
                 {% for review in book.reviews.all %}
-                <div class="pl-3">
-                    Rating: {{review.rating}}<br>
-                    {{review.user.first_name}} says: {{review.text}}<br>
-                    Posted on {{review.created_at.date}}<br>
+                <div class="pl-3 mb-3">
+                    <span>Rating: {{review.rating}}<br></span>
+                    <span><span><a href="/users/{{review.user.id}}">{{review.user.first_name}}</a></span> says: {{review.text}}<br></span>
+                    <span>Posted on {{review.created_at.date}}<br></span>
                 </div>
                 {% endfor %}
             </div>
