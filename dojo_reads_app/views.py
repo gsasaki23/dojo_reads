@@ -11,10 +11,21 @@ def index(request):
 def books(request):
     try:
         current_user = User.objects.get(id=request.session['user_id'])
-        # separate 'books' into one for first 3 and one for the rest
+        all_reviews = Review.objects.all()
+        reviews = []
+        if len(all_reviews) >= 3:
+            reviews.append(all_reviews[len(all_reviews)-1])
+            reviews.append(all_reviews[len(all_reviews)-2])
+            reviews.append(all_reviews[len(all_reviews)-3])
+        elif len(all_reviews) == 2:
+            reviews.append(all_reviews[0])
+            reviews.append(all_reviews[1])
+        elif len(all_reviews) == 1:
+            reviews.append(all_reviews[0])    
         context = {
             "first_name":current_user.first_name,
-            "books":Book.objects.all()
+            "reviews":reviews,
+            "books":Book.objects.all(),
         }
         return render(request, 'books.html', context)
     except KeyError:
@@ -107,20 +118,25 @@ def logout(request):
 
 # POST for attempting to add book, save and route to books if OK
 def attempt_book(request):    
-    # Creates new Book
-    Book.objects.create(
-        title=request.POST["title"],
-        author=request.POST["author"],
-    )
-    # Creates new Review
-    Review.objects.create(
-        text=request.POST["review_text"],
-        rating=request.POST["review_rating"],
-        book = Book.objects.last(),
-        user=User.objects.get(id=request.session['user_id']),
-    )
-    
-    return redirect(f'/books/{Book.objects.last().id}')
+    errors = Book.objects.reg_validator(request.POST)
+    if len(errors) > 0:
+        for key, value in errors.items():
+            messages.error(request, value)
+        return redirect('/books/add')    
+    else:
+        # Creates new Book
+        Book.objects.create(
+            title=request.POST["title"],
+            author=request.POST["author"],
+        )
+        # Creates new Review
+        Review.objects.create(
+            text=request.POST["review_text"],
+            rating=request.POST["review_rating"],
+            book = Book.objects.last(),
+            user=User.objects.get(id=request.session['user_id']),
+        )
+        return redirect(f'/books/{Book.objects.last().id}')
 
 # POST for attempting to add review, save and route to reviews if OK
 def attempt_review(request):

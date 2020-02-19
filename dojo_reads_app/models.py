@@ -73,12 +73,22 @@ class User(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     objects = UserManager()
 
+class BookManager(models.Manager):
+    def reg_validator(self, postData):
+        errors = {}
+        # Title not unique
+        for book in Book.objects.all():
+            if postData['title'] == book.title:
+                errors['password'] = "Book already exists!"
+        return errors
+
 class Book(models.Model):
     title=models.CharField(max_length=255)
     author=models.CharField(max_length=255)
     # reviews = list of associated reviews
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    objects=BookManager()
     
 class Review(models.Model):
     text = models.TextField()

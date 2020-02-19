@@ -15,11 +15,13 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
         integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
         crossorigin="anonymous"></script>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body>
     <div class="container">
         <!-- NavBar -->
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <nav class="navbar navbar-expand-md navbar-light bg-light">
             <h4 class="my-lg-0">Welcome, {{first_name}}!</h3>
             <div class="collapse navbar-collapse">
                 <ul class="navbar-nav mr-auto"></ul>
@@ -30,8 +32,39 @@
         <div class="row">
             <div class="col">
                 <h1>Recent Book Reviews:</h1>
-                <!-- show recent 3 instead -->
-                
+                {% for review in reviews %}
+                <div class="pl-3 mb-3">
+                    <span>Rating: 
+                        {% if review.rating == 5 %}
+                        <i class="fa fa-star-o"></i>
+                        <i class="fa fa-star-o"></i>
+                        <i class="fa fa-star-o"></i>
+                        <i class="fa fa-star-o"></i>
+                        <i class="fa fa-star-o"></i>
+                        {% endif %}
+                        {% if review.rating == 4 %}
+                        <i class="fa fa-star-o"></i>
+                        <i class="fa fa-star-o"></i>
+                        <i class="fa fa-star-o"></i>
+                        <i class="fa fa-star-o"></i>
+                        {% endif %}
+                        {% if review.rating == 3 %}
+                        <i class="fa fa-star-o"></i>
+                        <i class="fa fa-star-o"></i>
+                        <i class="fa fa-star-o"></i>
+                        {% endif %}
+                        {% if review.rating == 2 %}
+                        <i class="fa fa-star-o"></i>
+                        <i class="fa fa-star-o"></i>
+                        {% endif %}
+                        {% if review.rating == 1 %}
+                        <i class="fa fa-star-o"></i>
+                        {% endif %}
+                    <br></span>
+                    <span><span><a href="/users/{{review.user.id}}">{{review.user.first_name}}</a></span> says: {{review.text}}<br></span>
+                    <span>Posted on {{review.created_at.date}}<br></span>
+                </div>
+                {% endfor %}
             </div>
             <div class="col">
                 <h1>Other Books with Reviews:</h1>

@@ -19,7 +19,7 @@
 <body>
     <div class="container">
         <!-- NavBar -->
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <nav class="navbar navbar-expand-md navbar-light bg-light">
             <div class="collapse navbar-collapse">
                 <ul class="navbar-nav mr-auto"></ul>
                 <a href="/books" class="ml-5 my-2 my-lg-0">Home</a>
@@ -30,25 +30,35 @@
             <h1>Add a New Book Title and a Review:</h1>
         </div>
         <div class="row">
-            <form action="/attempt_book" method="post">
-                {% csrf_token %}
-                <label for="title" class="mt-2">Book Title:</label>
-                <input type="text" class="form-control" name="title" value="" required autofocus>
-                <label for="author" class="mt-2">Author:</label>
-                <input type="text" class="form-control" name="author" value="" required>
-                <label for="review_text" class="mt-2">Review:</label>
-                <input type="text" class="form-control" name="review_text" value="" required>
-                <label for="review_rating" class="mt-2">Rating:</label>
-                <select name="review_rating" required>
-                    <option value="1">1</option>
-                    <option value="1">2</option>
-                    <option value="1">3</option>
-                    <option value="1">4</option>
-                    <option value="1">5</option>
-                </select>
-                
-                <button type="submit" class="btn btn-secondary d-block mx-auto w-50 mt-5">Add Book and Review</button>
-            </form>
+            <div class="col">
+                <form action="/attempt_book" method="post">
+                    {% csrf_token %}
+                    <label for="title" class="mt-2">Book Title:</label>
+                    <input type="text" class="form-control" name="title" placeholder="Title" required autofocus>
+                    <label for="author" class="mt-2">Author:</label>
+                    <input type="text" class="form-control" name="author" placeholder="Author" required>
+                    <label for="review_text" class="mt-2">Review:</label>
+                    <textarea type="text" class="form-control" name="review_text" placeholder="Write your review here!" required></textarea>
+                    <label for="review_rating" class="mt-2">Rating:</label>
+                    <select name="review_rating" required>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                    </select>
+                    
+                    <button type="submit" class="btn btn-secondary d-block mx-auto w-50 mt-5">Add Book and Review</button>
+                    
+                    {% if messages %}
+                    <ul class="messages">
+                        {% for message in messages %}
+                        <li {% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</li>
+                        {% endfor %}
+                    </ul>
+                    {% endif %}
+                </form>
+            </div>
         </div>
     </div>
 </body>
